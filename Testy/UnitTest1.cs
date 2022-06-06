@@ -1,13 +1,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using 
 namespace Testy
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTestModelDanych
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TworzenieBazy()
         {
+            
         }
     }
 }

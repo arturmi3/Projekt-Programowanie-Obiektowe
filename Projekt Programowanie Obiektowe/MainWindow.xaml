@@ -8,9 +8,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="86*"/>
             <RowDefinition Height="131*"/>
         </Grid.RowDefinitions>
+        
+        <WrapPanel Grid.Row="0">
+            <Label Content="Wyszukaj wg nazwy:" Margin="3"/>
+            <TextBox Name="TekstSzukaj" Margin="3" MinWidth="200" />
+            <Button Click="Button_Click" Margin="3">SZUKAJ</Button>
+        </WrapPanel>
+
+        <ListBox x:Name="Drinks" Grid.Row="1" ItemsSource="{Binding Drinks}" />
 
     </Grid>
 </Window>

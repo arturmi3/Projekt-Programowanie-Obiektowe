@@ -24,5 +24,18 @@ namespace Projekt_Programowanie_Obiektowe
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string tekstSzukaj = this.TekstSzukaj.Text;
+            if (string.IsNullOrEmpty(tekstSzukaj)) return;
+
+            var client = new CocktailDbAPI.CocktailAPI();
+            List<CocktailDbAPI.Models.Drink.Drink>? lista = await client.GetDrinksByNameAsync(tekstSzukaj);
+
+            string[] drinks = lista.Select(drink => drink.DrinkName).ToArray();
+
+            this.Drinks.ItemsSource = drinks;
+        }
     }
 }
