@@ -5,21 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_Programowanie_Obiektowe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Background="WhiteSmoke"  >
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="86*"/>
-            <RowDefinition Height="131*"/>
         </Grid.RowDefinitions>
-        
-        <WrapPanel Grid.Row="0">
-            <Label Content="Wyszukaj wg nazwy:" Margin="3"/>
-            <TextBox Name="TekstSzukaj" Margin="3" MinWidth="200" />
-            <Button Click="Button_Click" Margin="3">SZUKAJ</Button>
-        </WrapPanel>
 
-        <ListBox x:Name="Drinks" Grid.Row="1" ItemsSource="{Binding Drinks}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*" />
+            <ColumnDefinition Width="0.6*" />
+        </Grid.ColumnDefinitions>
 
+        <Grid Grid.Row="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label>Lista moich drinków</Label>
+            <ListBox x:Name="ListDrinks" ItemsSource="{Binding MyDrinks}" SelectionChanged="ListDrinks_SelectionChanged" Grid.Row="1" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Nazwa}" FontWeight="Bold" />
+                            <Run Text=" kategoria: " />
+                            <Run Text="{Binding Kategoria}" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <DockPanel LastChildFill="False">
+                <Button DockPanel.Dock="Left" Margin="3" Padding="3" Click="Button_SzukajWAPI_Click">Szukaj w serwisie CoctailDbAPI</Button>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" DataContext="{Binding Drink}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0">Opis drinka</Label>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Label>Nazwa:</Label>
+                <TextBox Text="{Binding Nazwa}" MinWidth="200" Margin="3"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Vertical">
+                <Label>Przepis:</Label>
+                <TextBox Text="{Binding Przepis}" TextWrapping="Wrap" Margin="3" Height="58"></TextBox>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="1" DataContext="{Binding Drink}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0">Składniki</Label>
+            <ListBox Grid.Row="1" ItemsSource="{Binding Ingredients}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Nazwa}" FontWeight="Bold" />
+                            <Run Text=":" />
+                            <Run Text="{Binding Miara}" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1">
+            <DockPanel LastChildFill="False">
+                <Button DockPanel.Dock="Left" Margin="3" Padding="3" Click="Button_ZapiszDrinkaWBazie_Click">Zapisz drinka w mojej bazie</Button>
+                <Button DockPanel.Dock="Right" Margin="3" Padding="3" Click="Button_Click">Wyjście z programu</Button>
+            </DockPanel>
+        </Grid>
     </Grid>
 </Window>

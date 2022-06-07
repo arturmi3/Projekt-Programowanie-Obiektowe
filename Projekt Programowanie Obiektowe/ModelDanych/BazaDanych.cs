@@ -14,14 +14,13 @@ namespace ModelDanych
         public string DbPath { get; }
 
         public DbSet<Skladnik> Skladniki { get; set; }
-        public DbSet<DrinkSkladniki> DrinkiSkladniki { get; set; }
+        public DbSet<DrinkSkladnik> DrinkiSkladniki { get; set; }
         public DbSet<Drink> Drinki { get; set; }
 
         public DrinkiContext()
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "MojeDrinki.db");
+            var folder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); 
+            DbPath = System.IO.Path.Join(folder, "MojeDrinki.db");
         }
 
         // The following configures EF to create a Sqlite database file in the
@@ -30,6 +29,8 @@ namespace ModelDanych
         {
             //if (options.IsConfigured)
             options.UseSqlite($"Data Source={DbPath}");
+
+            options.EnableSensitiveDataLogging(true);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +46,19 @@ namespace ModelDanych
 
             modelBuilder.Entity<DrinkSkladnik>().
                 HasKey(p => new {p.IdDrinka, p.IdSkladnika});
+
+            // Updating many to many relationships in Entity Framework Core
+            // https://www.thereformedprogrammer.net/updating-many-to-many-relationships-in-entity-framework-core/ 
+
+            modelBuilder.Entity<DrinkSkladnik>()
+                 .HasOne(pt => pt.Drink)
+                 .WithMany(p => p.DrinkSkladniki)
+                 .HasForeignKey(pt => pt.IdDrinka);
+
+            modelBuilder.Entity<DrinkSkladnik>()
+                .HasOne(pt => pt.Skladnik)
+                .WithMany(t => t.DrinkSkladniki)
+                .HasForeignKey(pt => pt.IdSkladnika);
         }
     }
     
@@ -52,7 +66,6 @@ namespace ModelDanych
     {
         public int Id { get; set; }
         public string Nazwa { get; set; }        
-        public string Miara { get; set; }
 
         public ICollection<DrinkSkladnik> DrinkSkladniki { get; set; }
     }
@@ -61,8 +74,8 @@ namespace ModelDanych
     public class DrinkSkladnik
     {
         public int IdDrinka { get; set; }
-        public int IdSkladnika { get;set  }
-        public string Miara { get; set  }
+        public int IdSkladnika { get; set; }
+        public string? Miara { get; set; }
 
         public Skladnik Skladnik { get; set; }
         public Drink Drink { get; set; }
@@ -76,13 +89,13 @@ namespace ModelDanych
         public string Przepis { get; set; }
         
         // identyfikator drinka w serwisie TheCoctails..
-        public string IdDrinkDB { gets; get; }
+        public string? IdDrinkDB { get; set; }
         
-        public string Tagi { get; set; }
-        public string Kategoria { get; set; }
+        public string? Tagi { get; set; }
+        public string? Kategoria { get; set; }
         
-        public string Miniatura { get; set; }
-        public string Grafika { get; set; }
+        public string? Miniatura { get; set; }
+        public string? Grafika { get; set; }
 
         public ICollection<DrinkSkladnik> DrinkSkladniki { get; set; }
     }

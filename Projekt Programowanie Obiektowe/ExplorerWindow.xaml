@@ -1,0 +1,86 @@
+﻿<Window x:Class="Projekt_Programowanie_Obiektowe.ExplorerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_Programowanie_Obiektowe"
+        mc:Ignorable="d"
+        Title="ExplorerWindow" Height="450" Width="800"
+        Background="WhiteSmoke" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*" />
+            <ColumnDefinition Width="0.6*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" LastChildFill="False">
+            <Label Content="Wyszukaj wg nazwy:" Margin="3"/>
+            <TextBox Name="TekstSzukaj" Margin="3" MinWidth="200" />
+            <Button Click="SzukajWgNazwy_Click" Margin="3" Padding="3" MinWidth="100">SZUKAJ</Button>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label>Lista znalezionych drinków</Label>
+
+            <ListBox x:Name="Drinks" ItemsSource="{Binding Drinks}" SelectedItem="{Binding SelectedDrink}" Grid.Row="1" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding DrinkName}" FontWeight="Bold" />
+                            <Run Text=" (id w serwisie:" FontStyle="Italic"/>
+                            <Run Text="{Binding DrinkId}" FontStyle="Italic"/>
+                            <Run Text=")" FontStyle="Italic"/>
+                            <Run Text="{Binding Category}" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label>Lista znalezionych drinków</Label>
+
+            <ListBox x:Name="Lista" ItemsSource="{Binding Drinks}" SelectedItem="{Binding SelectedDrink}" Grid.Row="1" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding DrinkName}" FontWeight="Bold" />
+                            <Run Text=" (id w serwisie:" FontStyle="Italic"/>
+                            <Run Text="{Binding DrinkId}" FontStyle="Italic"/>
+                            <Run Text=")" FontStyle="Italic"/>
+                            <Run Text="{Binding Category}" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" DataContext="{Binding ElementName=Lista, Path=SelectedItem}">
+            <StackPanel Orientation="Vertical">
+                <Label >Przepis</Label>
+                <TextBlock Text="{Binding Instructions}" TextWrapping="Wrap" Margin="3" />
+            </StackPanel>
+        </Grid>
+
+        
+        <Grid Grid.Row="2" Grid.Column="1">
+            <DockPanel LastChildFill="False">
+                <Button DockPanel.Dock="Right" Margin="3" Padding="3" MinWidth="100" Click="Button_Wybierz_Click">WYBIERZ</Button>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
